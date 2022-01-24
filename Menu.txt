@@ -1,0 +1,11 @@
+10
+Vegetarian Cedars Platter	$12.99
+Falafel			$9.50
+Garden Salad			$7.50
+Greek Salad			$9.50
+Julienne Salad		$11.99
+Hummus			$5.99
+Baba Ghanouj			$6.99
+Foul				$6.99
+Fattoosh			$8.99
+Taboule			$6.99
