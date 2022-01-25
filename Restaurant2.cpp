@@ -160,13 +160,13 @@ void search()
         if (strcmp(inv.ID,id) == 0)
         {
             flag = 0;
-            printf("\nRecord Found\n");
-            printf("ID: %s",inv.ID);
-            printf("\nName: %s",inv.name);
-            printf("\nDescription: %s",inv.description);
-            printf("\nPrice: %.2f",inv.price);
-            printf("\nQuantity: %d",inv.quantity);
-            printf("\nValue: %.2f", inv.price*inv.quantity);
+            printf("\n********** RECORD FOUND **********\n");
+            printf("ID: \t%s",inv.ID);
+            printf("\nName: \t%s",inv.name);
+            printf("\nDescription: \t%s",inv.description);
+            printf("\nPrice: \t%.2f",inv.price);
+            printf("\nQuantity: \t%d",inv.quantity);
+            printf("\nValue: \t%.2f", inv.price*inv.quantity);
         }
     }
 
@@ -194,17 +194,17 @@ int main()
         float total = 0;
         int invoiceFound = 0;
         system("cls");
-        printf("LONGKIM RESTAURANT");
+        printf("\n\t\tLONGKIM RESTAURANT");
         printf("\n\n====================== OPERATION =======================");
         printf("\n1. Menu");
         printf("\n2. Order");
         printf("\n3. Bill");
         printf("\n4. Search");
         printf("\n==================== INVENTORY ====================");
-        printf("\n6. Add items");
-        printf("\n7. List of inventory");
-        printf("\n8. Delete items");
-        printf("\n9. Search items");
+        printf("\n5. Add items");
+        printf("\n6. List of inventory");
+        printf("\n7. Delete items");
+        printf("\n8. Search items");
         printf("\n0. Exit\n");
         printf("===================================================\n");
         printf("\nYour choice:\t ");
@@ -302,7 +302,7 @@ int main()
                 printf("\n*****Invoices of %s*****\n",name);
                 while(fread(&order,sizeof(struct orders),1,fp))
                 {
-                    float tot;
+                    float tot = 0;
                     if(strcmp(order.customer,name) == 0)
                     {
                         invoiceFound = 1;
