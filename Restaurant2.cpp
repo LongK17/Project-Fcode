@@ -27,6 +27,53 @@ struct inventory
     int quantity;
 }inv;
 
+void login()
+{
+    int a=0,i=0;
+    char uname[10],c = ' '; 
+    char pword[10],code[10];
+    char user[10]="manager";
+    char pass[10]="lkrs";
+    do
+    {
+        system("cls");
+	
+        printf("\n===================== LOGIN FORM =====================  ");
+        printf(" \n\tENTER USERNAME: ");
+	    scanf("%s", &uname); 
+	    printf(" \n\tENTER PASSWORD: ");
+	while(i < 10)
+	{
+	    pword[i] = getch();
+	    c = pword[i];
+	    if (c == 13) 
+            break;
+	    else printf("*");
+	    i++;
+	}
+	pword[i]='\0';
+	i = 0; 
+	if(strcmp(uname,user) == 0 && strcmp(pword,pass) == 0)
+	{
+	    printf("\n\n\n\t\tWELCOME !!!! LOGIN IS SUCCESSFUL");
+        getch();
+	    break;
+	}
+	else
+	{
+		printf("\n\tSORRY !!!!  PLEASE TRY AGAIN!!!");
+		a++;
+		getch();
+	}
+}
+	while(a<=2);
+	if (a>2)
+	{
+		printf("\nSorry you have entered the wrong username and password for four times!!!");
+		getch();
+	}
+	system("cls");	
+}
 void billHeader(char name [50], char date[30])
 {
     printf("\n\n");
@@ -117,6 +164,7 @@ void deletel()
     t = fopen("temp.dat","wb");
     f = fopen("ListofInventory.dat","rb");
 
+    printf("\n========================= DELETE ITEMS ========================");
     printf("Please enter ID to be deleted: ");
     scanf("%s",id);
 
@@ -141,7 +189,7 @@ void deletel()
     fclose(t);
     remove("ListofInventory.dat");
     rename("temp.dat","ListofInventory.dat");
-    printf("The item is successfully removed...");
+    printf("\n\tThe item is successfully removed...");
 }
 
 void search()
@@ -152,6 +200,7 @@ void search()
     FILE *f;
     f = fopen("ListofInventory.dat","rb");
 
+    printf("\n========================= SEARCH ITEMS ========================");
     printf("Enter the ID of item to search: ");
     scanf("%s",id);
 
@@ -160,7 +209,7 @@ void search()
         if (strcmp(inv.ID,id) == 0)
         {
             flag = 0;
-            printf("\n********** RECORD FOUND **********\n");
+            printf("\n======================== RECORD FOUND! ========================\n");
             printf("ID: \t%s",inv.ID);
             printf("\nName: \t%s",inv.name);
             printf("\nDescription: \t%s",inv.description);
@@ -179,6 +228,8 @@ void search()
 
 int main()
 {
+    login();
+    system("cls");
     int key, x, choice;
     int n;
     struct orders ord;
@@ -213,13 +264,13 @@ int main()
         switch(key)
         {
             case 1:
-                printf("\n================= MENU ===============\n");
+                printf("\n==================== MENU ==================\n");
                 for(int i = 0; i < n; i++)
                     {
                         fgets(name, 50, fi);
                         printf("%d.%s", (i+1), name);
                     }
-                printf("\n======================================\n");
+                printf("\n============================================\n");
                 printf("\nPress any key to continue...");
                 getch();
                 break;
@@ -275,7 +326,7 @@ int main()
                 printf("\nBill");
                 system("cls");
                 fp = fopen("RestaurantBill.dat","rb");
-                printf("\n  *****Your Previous Invoices*****\n");
+                printf("\n  ===================== PREVIOUS INVOICES ======================\n");
                 while(fread(&order,sizeof(struct orders),1,fp))
                 {
                     float tot = 0;
@@ -292,14 +343,14 @@ int main()
                 getch();
                 break;
             case 4:
-                printf("\nSearch");
+                printf("\n  ======================= SEARCH INVOICES =======================");
                 printf("\nEnter the name of the customer: ");
                 //fgetc(stdin);
                 fgets(name,50,stdin);
                 name[strlen(name)-1]=0;
                 system("cls");
                 fp = fopen("RestaurantBill.dat","rb");
-                printf("\n*****Invoices of %s*****\n",name);
+                printf("\n===================== Invoices of %s ========================\n",name);
                 while(fread(&order,sizeof(struct orders),1,fp))
                 {
                     float tot = 0;
@@ -316,7 +367,7 @@ int main()
                     }
                     if(invoiceFound == 0)
                     {
-                        printf("Sorry the invoice for %s doesn't exists",name);
+                        printf("\nSorry the invoice for %s doesn't exists",name);
                     }
                 }
                 fclose(fp); 
@@ -336,7 +387,7 @@ int main()
                 search();
                 break;
             case 0:
-                printf("\nGood Bye!");
+                printf("\nGOOD BYE! SEE YOU AGAIN!");
                 getch();
                 return 0;
             default:
@@ -345,9 +396,9 @@ int main()
                 getch();
                 break;
         }
-        printf("\nDo you want to perform another operation? [y/n]:\t");
+        printf("\n\nDo you want to perform another operation? [y/n]:\t");
         scanf("%s",&conFlag);
     }
-    printf("\nGood bye!");
+    printf("\nGOOD BYE!!!");
     fclose(fi);
 }
