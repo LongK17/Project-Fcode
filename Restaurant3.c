@@ -148,9 +148,9 @@ void listIn()
     FILE *f;
     f = fopen("ListofInventory.dat","rb");
 
-    printf("\nID\t");
+    printf("\nID\t\t");
     printf("NAME\t");
-    printf("DESCRIPTION\t");
+    printf("\tDESCRIPTION\t\t");
     printf("PRICE\t\t");
     printf("QUANTITY\t");
     printf("VALUE\n");
@@ -158,7 +158,7 @@ void listIn()
     for(int i = 0; i < 100 ;i++)
         printf("=");
     while(fread(&inv,sizeof(struct inventory),1,f))
-        printf("\n%s \t%s \t%s \t\t%.2f \t%d  \t\t%.2f", inv.ID, inv.name, inv.description, inv.price, inv.quantity, inv.price*inv.quantity);
+        printf("\n%s \t\t%s \t\t%s \t\t\t%.2f \t\t%d  \t\t%.2f", inv.ID, inv.name, inv.description, inv.price, inv.quantity, inv.price*inv.quantity);
     
     printf("\n");
     for(int i = 0; i < 100; i++)
@@ -177,7 +177,7 @@ void deletel()
     f = fopen("ListofInventory.dat","rb");
 
     printf("\n========================= DELETE ITEMS ========================");
-    printf("Please enter ID to be deleted: ");
+    printf("\nPlease enter ID to be deleted: ");
     scanf("%s",id);
 
     while(fread(&inv,sizeof(struct inventory),1,f))
@@ -212,7 +212,7 @@ void search()
     FILE *f;
     f = fopen("ListofInventory.dat","rb");
 
-    printf("\n========================= SEARCH ITEMS ========================");
+    printf("\n========================= SEARCH ITEMS ========================\n");
     printf("\nEnter the ID of item to search: ");
     scanf("%s",id);
 
@@ -222,12 +222,12 @@ void search()
         {
             flag = 0;
             printf("\n======================== RECORD FOUND! ========================\n");
-            printf("ID: \t%s",inv.ID);
-            printf("\nName: \t%s",inv.name);
+            printf("ID: \t\t%s",inv.ID);
+            printf("\nName: \t\t%s",inv.name);
             printf("\nDescription: \t%s",inv.description);
-            printf("\nPrice: \t%.2f",inv.price);
+            printf("\nPrice: \t\t%.2f",inv.price);
             printf("\nQuantity: \t%d",inv.quantity);
-            printf("\nValue: \t%.2f", inv.price*inv.quantity);
+            printf("\nValue: \t\t%.2f", inv.price*inv.quantity);
         }
     }
 
@@ -419,6 +419,7 @@ int main()
         switch(key)
         {
             case 1:
+                system("cls");
                 printf("\n==================== MENU ==================\n");
                 for(int i = 0; i < n; i++)
                     {
@@ -498,7 +499,7 @@ int main()
                 getch();
                 break;
             case 4:
-                printf("\n  ======================= SEARCH INVOICES =======================");
+                printf("\n  ======================= SEARCH INVOICES =======================\n");
                 printf("\nEnter the name of the customer: ");
                 //fgetc(stdin);
                 fgets(name,50,stdin);
