@@ -27,6 +27,18 @@ struct inventory
     int quantity;
 }inv;
 
+struct products
+{
+    char name[50];
+    int qua;
+    float price;
+    float total;
+};
+struct listProducts
+{
+    struct products list[100];
+};
+
 void login()
 {
     int a=0,i=0;
@@ -55,7 +67,7 @@ void login()
 	i = 0; 
 	if(strcmp(uname,user) == 0 && strcmp(pword,pass) == 0)
 	{
-	    printf("\n\n\n\t\tWELCOME !!!! LOGIN IS SUCCESSFUL");
+	    printf("\n\n\n\t\tWELCOME !!!! LOGIN IS SUCCESSFUL!");
         getch();
 	    break;
 	}
@@ -69,7 +81,7 @@ void login()
 	while(a<=2);
 	if (a>2)
 	{
-		printf("\nSorry you have entered the wrong username and password for four times!!!");
+		printf("\nSorry you have entered the wrong username and password for many times!!!");
 		getch();
 	}
 	system("cls");	
@@ -130,7 +142,7 @@ void add()
     fclose(f);
 }
 
-void list()
+void listIn()
 {
     system("cls");
     FILE *f;
@@ -201,7 +213,7 @@ void search()
     f = fopen("ListofInventory.dat","rb");
 
     printf("\n========================= SEARCH ITEMS ========================");
-    printf("Enter the ID of item to search: ");
+    printf("\nEnter the ID of item to search: ");
     scanf("%s",id);
 
     while(fread(&inv,sizeof(struct inventory),1,f))
@@ -225,6 +237,139 @@ void search()
     getch();
     fclose(f);
 }
+//case 9;
+void delLineBreaks(char x[])
+{
+    size_t len = strlen(x);
+    if(x[len-1] == '\n')
+    {
+        x[len-1] = '\0';
+    }
+}
+void inputProduct(struct products *pr)
+{
+        printf("\nName:\t");
+        fflush(stdin); //fgetc();
+        fgets((*pr).name, sizeof((*pr).name), stdin);
+        delLineBreaks((*pr).name);
+        printf("\nPrice:\t$");
+        scanf("%f", &pr->price);
+        printf("\nQuantity:\t");
+        scanf("%d", &pr->qua);
+}
+void inputSoldProducts(int *countSold, struct products list[])
+{
+    printf("\n");
+    printf("\n======================= PRODUCTS SOLD =========================");
+    do{
+        printf("\nEnter total products sold in week: ");
+        scanf("%d", countSold);
+    }while ((*countSold) <= 0);
+    printf("Please enter information of %d products", *countSold);
+    int i;
+    for(i = 0; i < (*countSold); i++)
+    {
+        printf("\nEnter Product %d", i+1);
+        inputProduct(&list[i]);
+    }
+}
+void processing(struct products *pr)
+{
+    (*pr).total = (*pr).price * (*pr).qua;
+}
+void countGrandTotal(struct products *pr, float *grandTotal)
+{
+    (*grandTotal) = (*grandTotal) + (*pr).total;
+}
+void ouputProducts(struct products *pr)
+{
+    printf("\t%s\t\t%.2f\t\t%d\t\t%.2f$", (*pr).name, (*pr).price, (*pr).qua, (*pr).total);
+}
+void outputSoldProducts(int countSold, struct products list[])
+{
+    int i;
+    float grandTotal;
+    printf("\n======================= REPORT IN THE WEEK ==========================");
+    printf("\nNo\tName\t\tPrice\t\tQuantity\tTotal");
+    for(i = 0; i < countSold; i++)
+    {
+        printf("\n%d", i+1);
+        processing(&list[i]);
+        ouputProducts(&list[i]);
+        printf("\n");
+        countGrandTotal(&list[i], &grandTotal);
+    }
+    printf("\n---------------------------------------------------------------------");
+    printf("\nGRAND TOTAL\t\t\t\t\t\t%.2f$", grandTotal);
+}
+
+//case 10 & 11;
+void inputReport(float *capital, float *revenue)
+{
+    printf("Enter restaurant's capital:\t\t\t\t$");
+    scanf("%f", capital);
+    printf("Enter restaurant's revenue:\t\t\t\t$");
+    scanf("%f", revenue);
+}
+void interestRates(float *revenue, float *afterRevenue)
+{
+    (*afterRevenue) = (*revenue) - (2 * ((*revenue) * 10 / 100)); 
+}
+void outputReport(float afterRevenue)
+{
+    printf("The interest rates of Restaurant is:\t\t\t$%g", afterRevenue);
+}
+void countProfit(float *capital, float *afterRevenue, float *profit)
+{
+    (*profit) = (*afterRevenue) - (*capital);
+}
+void final(float profit)
+{
+    if(profit < 0)
+    {
+        printf("\nRestaurant business losses:\t\t\t\t$%.2f", profit);
+    }
+    else if(profit > 0)
+    {
+        printf("\nRestaurant business has profit:\t\t\t\t$%.2f", profit);
+    }
+    else 
+    {
+        printf("\nRestaurant business has no profit!!!");
+    }
+}
+void countGrandProfit(float *capital, float *afterRevenue, float *profit, float *grandProfit)
+{
+    (*profit) = (*afterRevenue) - (*capital);
+    (*grandProfit) = (*grandProfit) + (*profit);
+}
+void reportRestaurantBusiness(float capital, float revenue, float afterRevenue, float profit, float *grandProfit)
+{
+    printf("\n===================== BUSINESS PROFIT IN THE WEEK ===================\n");
+    inputReport(&capital, &revenue);
+    interestRates(&revenue, &afterRevenue);
+    outputReport(afterRevenue);
+    countProfit(&capital, &afterRevenue, &profit);
+    final(profit);
+    countGrandProfit(&capital, &afterRevenue, &profit, &(*grandProfit));
+}
+void reportBuisinessInWeeks(int bWeeks, float capital, float revenue, float afterRevenue, float profit, float grandProfit)
+{
+    printf("\n=================== BUSINESS PROFIT IN WEEKS ======================");
+    do{
+        printf("\nEnter total of weeks: ");
+        scanf("%d", &bWeeks);
+    }while (bWeeks <= 0);
+    int i;
+    for(i = 0; i < bWeeks; i++)
+    {
+        printf("\n======================== WEEK %d ====================================", i+1);
+        reportRestaurantBusiness(capital, revenue, afterRevenue, profit, &grandProfit);
+        printf("\n");
+    }
+    printf("\n---------------------------------------------------------------------");
+    printf("\nGRAND PROFIT\t\t\t\t\t\t$%.2f", grandProfit);
+}
 
 int main()
 {
@@ -236,6 +381,13 @@ int main()
     struct orders order;
     char saveBill = 'y',conFlag = 'y';
     char name[50];
+    float grandTotal = 0;
+    int countSold;
+    struct products pr;
+    struct products listProduct[50];
+    int bWeek;
+    float capital, revenue, afterRevenue, profit;
+    float grandProfit;
     FILE *fp;
     FILE *fi = fopen("D:/Code/Restaurant 2/Menu.txt", "r");
     fscanf(fi, "%d", &n);
@@ -256,6 +408,9 @@ int main()
         printf("\n6. List of inventory");
         printf("\n7. Delete items");
         printf("\n8. Search items");
+        printf("\n9. Report product in the week");
+        printf("\n10. Report buisiness in the week");
+        printf("\n11. Report buisiness in weeks");
         printf("\n0. Exit\n");
         printf("===================================================\n");
         printf("\nYour choice:\t ");
@@ -378,13 +533,31 @@ int main()
                 add();
                 break;
             case 6:
-                list();
+                listIn();
                 break;
             case 7:
                 deletel();
                 break;
             case 8:
                 search();
+                break;
+            case 9:
+                inputSoldProducts(&countSold, listProduct);
+                outputSoldProducts(countSold, listProduct);
+                printf("\nPress any key to continue...");
+                getch();
+                break;
+            case 10:
+                system("cls");
+                reportRestaurantBusiness(capital, revenue, afterRevenue, profit, &grandProfit);
+                printf("\nPress any key to continue...");
+                getch();
+                break;
+            case 11:
+                system("cls");
+                reportBuisinessInWeeks(bWeek, capital, revenue, afterRevenue, profit, grandProfit);
+                printf("\nPress any key to continue...");
+                getch();
                 break;
             case 0:
                 printf("\nGOOD BYE! SEE YOU AGAIN!");
@@ -399,6 +572,7 @@ int main()
         printf("\n\nDo you want to perform another operation? [y/n]:\t");
         scanf("%s",&conFlag);
     }
-    printf("\nGOOD BYE!!!");
+    printf("\n---------------------------------------------------------------------");
+    printf("\nGOOD BYE!!! HAVE A NICE DAY!!!");
     fclose(fi);
 }
